@@ -85,8 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _updateBatteryState(BatteryState state) async {
+    debugPrint(state.toString());
+
     int level = await _battery.batteryLevel;
     debugPrint('_updateBatteryState: $level');
+    
+    if (level == _batterLevel) return;
+
     setState(() {
       _batterLevel = level;
     });
@@ -175,10 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: _maxLevelController,
               ),
             ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: const Text('Save Changes'),
-            ),
 
             // min level
             const SizedBox(height: 20),
@@ -193,10 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: const Text('Save Changes'),
-            )
           ],
         ),
       ),
