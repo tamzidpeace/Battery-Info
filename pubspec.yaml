@@ -1,4 +1,4 @@
-name: batter_info_test
+name: batter_info
 description: This application warn for full battery and low batter with custom battery percentage
 
 
