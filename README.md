@@ -1,16 +1,6 @@
-# batter_info_test
+# Battery Info
 
-A new Flutter project.
+This project will allow get alert for custom battery percentage. Currently Only Available For Macos
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img width="438" alt="image" src="https://user-images.githubusercontent.com/19519527/179127315-aec019aa-7bbe-420b-8192-bb24a3f1003e.png">
