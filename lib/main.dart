@@ -196,6 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 keyboardType: TextInputType.number,
+                maxLength: 2,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Set Max Warning Level',
@@ -214,6 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 keyboardType: TextInputType.number,
+                maxLength: 2,
                 controller: _minLevelController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
