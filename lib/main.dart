@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive/hive.dart';
 
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
@@ -24,6 +25,8 @@ Future<void> main() async {
 
     debugPrint('flutterLocalNotificationsPlugin.initialize: here');
   });
+
+  Hive.init('./hive');
 
   runApp(const MyApp());
 }
@@ -53,6 +56,7 @@ class MyHomePage extends StatefulWidget {
   final String? title;
 
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -65,15 +69,19 @@ class _MyHomePageState extends State<MyHomePage> {
   BatteryState? _batteryState;
   StreamSubscription<BatteryState>? _batteryStateSubscription;
 
+  // store data
+
   @override
   void initState() {
     super.initState();
     // notification related
     _requestPermissions();
 
-    /// batter related
+    // batter related
     _battery.batteryState.then(_updateBatteryState);
     _batteryStateSubscription = _battery.onBatteryStateChanged.listen(_updateBatteryState);
+
+    _storeBatteryPercentage();
   }
 
   void _requestPermissions() {
@@ -89,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     int level = await _battery.batteryLevel;
     debugPrint('_updateBatteryState: $level');
-    
+
     if (level == _batterLevel) return;
 
     setState(() {
@@ -144,6 +152,21 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> _storeBatteryPercentage() async {
+    var box = await Hive.openBox('myBox');
+    int? sMax = box.get('max');
+    if (sMax != null) {
+      debugPrint('have');
+      _maxLevelController.text = sMax.toString();
+      _minLevelController.text = box.get('min').toString();
+    } else {
+      box.put('max', int.parse(_maxLevelController.text));
+      box.put('min', int.parse(_minLevelController.text));
+      debugPrint('do not have');
+    }
+    
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -178,6 +201,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: 'Set Max Warning Level',
                 ),
                 controller: _maxLevelController,
+                onChanged: (value)  async{
+                   var box = await Hive.openBox('myBox');
+                    box.put('max', int.parse(value));
+                },
               ),
             ),
 
@@ -192,6 +219,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   border: OutlineInputBorder(),
                   labelText: 'Set Min Warning Level',
                 ),
+                onChanged: (value)  async{
+                   var box = await Hive.openBox('myBox');
+                    box.put('min', int.parse(value));
+                },
               ),
             ),
           ],
